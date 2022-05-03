@@ -5,13 +5,15 @@ import getUsersService from "../../services/user/getUser.service"
 class UserController {
   static async store(req: Request, res: Response) {
     try {
-      const { name, email, password } = req.body
-      const newUser = await createUserService({ name, email, password })
+      const { name, email } = req.body
+      const newUser = await createUserService({ name, email })
 
       return res.status(201).json(newUser)
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json(error.message)
+        return res
+          .status(400)
+          .json({ error: error.name, message: error.message })
       }
     }
   }
@@ -23,7 +25,10 @@ class UserController {
       return res.status(200).json(users)
     } catch (error) {
       if (error instanceof Error) {
-        return res.status(400).json(error.message)
+        return res.status(400).json({
+          error: error.name,
+          message: error.message,
+        })
       }
     }
   }

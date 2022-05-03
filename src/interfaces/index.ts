@@ -1,12 +1,10 @@
-export interface User {
+export interface IUser {
   id: string
   email: string
   name: string
-  password: string
 }
 
-export interface CreateUser {
+export interface ICreateUser {
   email: string
   name: string
-  password: string
 }
