@@ -5,8 +5,8 @@ import getUsersService from "../../services/user/getUser.service"
 class UserController {
   static async store(req: Request, res: Response) {
     try {
-      const { name, email } = req.body
-      const newUser = await createUserService({ name, email })
+      const { name, email, password } = req.body
+      const newUser = await createUserService({ name, email, password })
 
       return res.status(201).json(newUser)
     } catch (error) {

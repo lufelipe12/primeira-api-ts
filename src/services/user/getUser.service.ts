@@ -7,7 +7,11 @@ const getUsersService = async () => {
 
     const users = await userRepository.find()
 
-    return users
+    const usersToShow = users.map((user) => {
+      return { id: user.id, name: user.name, email: user.email }
+    })
+
+    return usersToShow
   } catch (error) {
     throw new Error("Something goes wrong")
   }
