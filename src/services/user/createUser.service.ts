@@ -17,6 +17,8 @@ const createUserService = async ({ name, email }: ICreateUser) => {
     userCreated.name = name
     userCreated.email = email
 
+    userRepository.create(userCreated)
+    await userRepository.save(userCreated)
     return userCreated
   } catch (error) {
     throw new Error("Something goes wrong")
