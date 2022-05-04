@@ -1,8 +1,5 @@
 import { User } from "../../entities/user.entity"
-import { IUser } from "../../interfaces"
 import { AppDataSource } from "../../data-source"
-
-import bcrypt from "bcrypt"
 
 const getUserService = async (id: string) => {
   try {

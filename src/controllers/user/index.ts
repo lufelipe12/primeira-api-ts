@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import createUserService from "../../services/user/createUser.service"
 import getUserService from "../../services/user/getUser.service"
 import getUsersService from "../../services/user/getUsers.service"
+import userLoginService from "../../services/user/login.service"
 
 class UserController {
   static async store(req: Request, res: Response) {
@@ -47,6 +48,25 @@ class UserController {
         message: "User found",
         user: user,
       })
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({
+          error: error.name,
+          message: error.message,
+        })
+      }
+    }
+  }
+
+  static async login(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body
+
+      const userLoggedIn = await userLoginService({ email, password })
+
+      return res
+        .status(200)
+        .json({ message: "User login successfully", user: userLoggedIn })
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).json({
