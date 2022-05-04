@@ -1,13 +1,15 @@
 import { Router } from "express"
 
 import UserController from "../../controllers/user"
-import verifyAuthToken from "../../middlewares/authToken.middleware"
+import { authUser } from "../../middlewares/authToken.middleware"
 
 const userRouter = Router()
 
 userRouter.post("/", UserController.store)
 userRouter.post("/login", UserController.login)
 userRouter.get("/", UserController.index)
-userRouter.get("/:id", verifyAuthToken, UserController.show)
+userRouter.get("/me", authUser, UserController.show)
+userRouter.patch("/me", authUser, UserController.update)
+userRouter.delete("/me", authUser, UserController.delete)
 
 export default userRouter

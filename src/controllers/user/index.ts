@@ -1,8 +1,10 @@
 import { Request, Response } from "express"
 import createUserService from "../../services/user/createUser.service"
+import userDeleteSelfService from "../../services/user/deleteUser.service"
 import getUserService from "../../services/user/getUser.service"
 import getUsersService from "../../services/user/getUsers.service"
 import userLoginService from "../../services/user/login.service"
+import userUpdatePasswordService from "../../services/user/updateUserPassword.service"
 
 class UserController {
   static async store(req: Request, res: Response) {
@@ -37,8 +39,8 @@ class UserController {
 
   static async show(req: Request, res: Response) {
     try {
-      const { id } = req.params
-      const user = await getUserService(id)
+      const email = req.userEmail
+      const user = await getUserService(email)
 
       if (user === undefined) {
         return res.status(400).json({ error: "User cannot be found." })
@@ -67,6 +69,43 @@ class UserController {
       return res
         .status(200)
         .json({ message: "User login successfully", user: userLoggedIn })
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({
+          error: error.name,
+          message: error.message,
+        })
+      }
+    }
+  }
+
+  static async delete(req: Request, res: Response) {
+    try {
+      const email = req.userEmail
+
+      const userDeleted = await userDeleteSelfService(email)
+
+      return res
+        .status(200)
+        .json({ message: "User deleted successfully", user: userDeleted })
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({
+          error: error.name,
+          message: error.message,
+        })
+      }
+    }
+  }
+
+  static async update(req: Request, res: Response) {
+    try {
+      const email = req.userEmail
+      const { password } = req.body
+
+      const user = await userUpdatePasswordService(email, password)
+
+      return res.status(201).json({ message: "User updated", user: user })
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).json({

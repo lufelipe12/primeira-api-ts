@@ -1,31 +1,19 @@
-import jwt from "jsonwebtoken"
 import { Request, Response, NextFunction } from "express"
+import jwt from "jsonwebtoken"
 
-const verifyAuthToken = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const authorization = req.headers.authorization
+export const authUser = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1]
 
-  if (!authorization) {
-    return res.status(404).json({
-      status: "error",
-      message: "No token found",
-    })
+    jwt.verify(
+      String(token),
+      String(process.env.JWT_SECRET),
+      (err: any, decoded: any) => {
+        req.userEmail = decoded.email
+        next()
+      }
+    )
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid Token" })
   }
-
-  const [type, token] = authorization.split(" ")
-
-  jwt.verify(token, String(process.env.JWT_SECRET), (error, decoded) => {
-    if (error) {
-      return res.status(404).json({
-        status: "error",
-        message: "Invalid token",
-      })
-    }
-    next()
-  })
 }
-
-export default verifyAuthToken

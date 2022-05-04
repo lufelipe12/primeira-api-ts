@@ -1,7 +1,7 @@
 import { User } from "../../entities/user.entity"
 import { AppDataSource } from "../../data-source"
 
-const getUserService = async (id: string) => {
+const getUserService = async (email: string) => {
   try {
     const userRepository = AppDataSource.getRepository(User)
     const users = await userRepository.find()
@@ -10,7 +10,7 @@ const getUserService = async (id: string) => {
       return { id: user.id, name: user.name, email: user.email }
     })
 
-    const user = usersToShow.find((user) => user.id === id)
+    const user = usersToShow.find((user) => user.email === email)
 
     return user
   } catch (error) {

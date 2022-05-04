@@ -1,6 +1,6 @@
 import { User } from "../../entities/user.entity"
-import { ICreateUser } from "../../interfaces"
 import { AppDataSource } from "../../data-source"
+import { ICreateUser } from "../../interfaces"
 
 import bcrypt from "bcrypt"
 
