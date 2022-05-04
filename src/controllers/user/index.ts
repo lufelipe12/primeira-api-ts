@@ -9,7 +9,7 @@ import userUpdatePasswordService from "../../services/user/updateUserPassword.se
 class UserController {
   static async store(req: Request, res: Response) {
     try {
-      const { name, email, password } = req.body
+      const { name, email, password } = req.newUser
       const newUser = await createUserService({ name, email, password })
 
       return res.status(201).json(newUser)
